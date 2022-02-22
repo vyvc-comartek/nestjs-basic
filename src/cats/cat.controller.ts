@@ -3,20 +3,45 @@ import {
 	Controller,
 	Delete,
 	Get,
+	HttpException,
+	HttpStatus,
+	Param,
 	Patch,
 	Post,
 	Put,
+	Query,
 } from '@nestjs/common';
 import { CatService } from './cat.service';
-import { CreateCatDto, DeleteCatDto, ReplaceCatDto, UpdateCatDto } from './dto';
+import {
+	CreateCatDto,
+	DeleteCatDto,
+	GetCatByIndex,
+	ReplaceCatDto,
+	SearchCatDto,
+	UpdateCatDto,
+} from './dto';
 
 @Controller('cats')
 export class CatController {
 	constructor(private catsService: CatService) {}
 
+	@Get(':index')
+	async getByIndex(@Param() getCatByIndex: GetCatByIndex) {
+		return this.catsService.getByIndex(getCatByIndex);
+	}
+
 	@Get()
-	async getAll() {
-		return this.catsService.findAll();
+	async search(@Query() searchCatDto: SearchCatDto) {
+		const results = await this.catsService.search(searchCatDto);
+		if (results.length === 0)
+			throw new HttpException(
+				{
+					status: HttpStatus.NO_CONTENT,
+					errorMsg: 'No cat found',
+				},
+				HttpStatus.NO_CONTENT,
+			);
+		return results;
 	}
 
 	@Post()
@@ -30,7 +55,10 @@ export class CatController {
 	}
 
 	@Put('replace')
-	async replace(@Body() replaceCatDto: ReplaceCatDto) {
+	async replace(
+		@Body()
+		replaceCatDto: ReplaceCatDto,
+	) {
 		return this.catsService.replace(replaceCatDto);
 	}
 

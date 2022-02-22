@@ -1,5 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCatDto, DeleteCatDto, ReplaceCatDto, UpdateCatDto } from './dto';
+import {
+	CreateCatDto,
+	DeleteCatDto,
+	GetCatByIndex,
+	ReplaceCatDto,
+	SearchCatDto,
+	UpdateCatDto,
+} from './dto';
 import { Cat } from './interfaces/cat.interface';
 
 @Injectable()
@@ -16,8 +23,17 @@ export class CatService {
 		}
 	}
 
-	async findAll() {
-		return this.cats;
+	async getByIndex({ index }: GetCatByIndex) {
+		return this.cats[index];
+	}
+
+	async search({ name }: SearchCatDto) {
+		if (!name) return this.cats;
+		return this.cats.filter(
+			(cat) =>
+				cat.name.includes(name) ||
+				name.includes(cat.name),
+		);
 	}
 
 	async update({ index, ...cat }: UpdateCatDto) {

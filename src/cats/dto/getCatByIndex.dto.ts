@@ -1,6 +1,6 @@
 import { IsIndex } from '../decorators/isIndex.decorator';
 
-export class DeleteCatDto {
+export class GetCatByIndex {
 	@IsIndex()
 	readonly index: number;
 }
