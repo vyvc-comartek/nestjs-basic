@@ -3,14 +3,15 @@ import {
 	Controller,
 	Delete,
 	Get,
-	HttpException,
-	HttpStatus,
 	Param,
 	Patch,
 	Post,
 	Put,
 	Query,
+	UseFilters,
 } from '@nestjs/common';
+import { NoContentException } from '../exceptions/no-content.exception';
+import { HttpExceptionFilter } from '../http-exception.filter';
 import { CatService } from './cat.service';
 import {
 	CreateCatDto,
@@ -31,16 +32,11 @@ export class CatController {
 	}
 
 	@Get()
+	@UseFilters(HttpExceptionFilter)
 	async search(@Query() searchCatDto: SearchCatDto) {
 		const results = await this.catsService.search(searchCatDto);
 		if (results.length === 0)
-			throw new HttpException(
-				{
-					status: HttpStatus.NO_CONTENT,
-					errorMsg: 'No cat found',
-				},
-				HttpStatus.NO_CONTENT,
-			);
+			throw new NoContentException('No cat found');
 		return results;
 	}
 

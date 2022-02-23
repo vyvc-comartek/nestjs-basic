@@ -1,6 +1,6 @@
-export { CreateCatDto } from './createCat.dto';
-export { DeleteCatDto } from './deleteCat.dto';
-export { GetCatByIndex } from './getCatByIndex.dto';
-export { ReplaceCatDto } from './replaceCat.dto';
-export { SearchCatDto } from './searchCat.dto';
-export { UpdateCatDto } from './updateCat.dto';
+export { CreateCatDto } from './create-cat.dto';
+export { DeleteCatDto } from './delete-cat.dto';
+export { GetCatByIndex } from './get-cat-by-index.dto';
+export { ReplaceCatDto } from './replace-cat.dto';
+export { SearchCatDto } from './search-cat.dto';
+export { UpdateCatDto } from './update-cat.dto';

@@ -13,6 +13,10 @@ import { Cat } from './interfaces/cat.interface';
 export class CatService {
 	private cats: Cat[] = [];
 
+	public getCats() {
+		return this.cats;
+	}
+
 	async create(createCatDto: CreateCatDto) {
 		const catData = createCatDto as Cat;
 		try {
@@ -29,10 +33,11 @@ export class CatService {
 
 	async search({ name }: SearchCatDto) {
 		if (!name) return this.cats;
+		const n = name.toLowerCase();
 		return this.cats.filter(
 			(cat) =>
-				cat.name.includes(name) ||
-				name.includes(cat.name),
+				cat.name.toLowerCase().includes(n) ||
+				n.includes(cat.name.toLowerCase()),
 		);
 	}
 
